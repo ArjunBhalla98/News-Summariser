@@ -152,10 +152,10 @@ def get_summary(text, n):
     )
 
     important_sent_idxes_ordered = sorted(
-        [i[0] for i in importance_ranked_sentence_idxes]
+        [i[0] for i in importance_ranked_sentence_idxes[:n]]
     )
 
-    summary = [idx_to_sentence[i] for i in important_sent_idxes_ordered[:n]]
+    summary = [idx_to_sentence[i] for i in important_sent_idxes_ordered]
 
     summary = " ".join(summary)
     print("\n")
@@ -169,5 +169,5 @@ if __name__ == "__main__":
     file = "input.txt"
     file = open(file, "r")
     text = file.read()
-    get_summary(text, 3)
+    get_summary(text, 5)
 
