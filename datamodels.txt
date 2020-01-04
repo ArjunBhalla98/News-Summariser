@@ -1,0 +1,37 @@
+Frontend -> Backend:
+
+{
+    'sources': ['cnn', 'bbc', 'hackernews'],
+    'num_sentences' : '1', 
+    'num_articles' : '2'
+}
+
+
+Backend -> Frontend (server response after processing)
+
+{
+   'cnn': [
+		{
+		   'title':'Trump starts WW3',
+		   'text' :'summarised article goes here'
+	        },
+
+		{
+		   'title':'another article',
+		   'text': 'more summary',
+		}
+
+	  ],
+
+    'bbc': [
+		{
+		    'title':'bbc article 1',
+ 		    'text': 'bbc article 1 summarised'
+		},
+
+		{
+		    'title':'bbc article 2',
+		    'text':'bbc article 2 summarised'
+		}
+	   ]
+}
