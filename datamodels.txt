@@ -13,12 +13,14 @@ Backend -> Frontend (server response after processing)
    'cnn': [
 		{
 		   'title':'Trump starts WW3',
-		   'text' :'summarised article goes here'
+		   'text' :'summarised article goes here',
+		   'link' : 'cnn.com/article1'
 	        },
 
 		{
 		   'title':'another article',
 		   'text': 'more summary',
+		   'link' : 'cnn.com/article1'
 		}
 
 	  ],
@@ -27,11 +29,13 @@ Backend -> Frontend (server response after processing)
 		{
 		    'title':'bbc article 1',
  		    'text': 'bbc article 1 summarised'
+		    'link' : 'bbc.com/article1'
 		},
 
 		{
 		    'title':'bbc article 2',
 		    'text':'bbc article 2 summarised'
+		    'link' : 'bbc.com/article1'
 		}
 	   ]
 }
