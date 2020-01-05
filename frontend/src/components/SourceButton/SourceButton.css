@@ -1,8 +1,4 @@
 .source-button {
-    flex: 1;
-    margin: 10px;
-}
-
-.source-button:focus {
-    background-color: red;
+  flex: 1;
+  margin: 1vw;
 }
