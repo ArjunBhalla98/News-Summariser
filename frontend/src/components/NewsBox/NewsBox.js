@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React,{Component} from 'react';
 import './NewsBox.css';
 import Article from './Article';
 
 
-class NewsBox extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     this.state = { source: this.props.source }
-    // }
+class NewsBox extends Component
+{
+    constructor(props)
+    {
+        super(props);
+    }
 
-    render() {
+    render()
+    {
         return (
-            <div>
-                <h2>News Source (e.g. CNN)</h2>
-                <Article />
-                <Article />
-                <Article />
+            <div id="article-container">
+                <h2>{this.props.source.toUpperCase()}</h2>
+                <Article title={this.props.title} text={this.props.articleText} link={this.props.articleLink} />
             </div>
         );
     }

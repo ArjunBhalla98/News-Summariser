@@ -18,7 +18,8 @@ class App extends Component
         "New York Times",
       ],
       activeButtons: ["CNN","BBC"],
-      maxActiveButtons: 3
+      maxActiveButtons: 3,
+      currentNewsObjects: []
     };
   }
 
@@ -50,10 +51,12 @@ class App extends Component
   {
     let baseUrl='http://localhost:8000/api/articles/';
     let url=this.buildUrl(baseUrl,this.state.activeButtons)
-    fetch(url).then((response) => response.json())
-      .then(function(data) {console.log(data)})
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {this.setState({currentNewsObjects: data})})
       .catch((error) => console.log(error));
   }
+
 
   buildUrl(baseUrl,sources)
   {
@@ -95,9 +98,14 @@ class App extends Component
           })}
         </div>
         <div id="news-row">
-          <NewsBox />
-          <NewsBox />
-          <NewsBox />
+          {
+            this.state.currentNewsObjects.map((obj,_) => 
+            {
+              return (
+                <NewsBox source={obj.source} articleText={obj.text} title={obj.title} articleLink={obj.link} />
+              )
+            })
+          }
         </div>
       </div>
     );
