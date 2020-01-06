@@ -34,6 +34,7 @@
 
 #sources-row {
   display: flex;
+  height: auto;
   /* width: 50%; */
 }
 
@@ -41,9 +42,14 @@
   display: flex;
 }
 
+#sources-row button {
+  border-radius: 8px;
+  padding: 1%;
+  margin: 3%;
+  flex: 1;
+}
 .selected {
-  background-color: green;
+  background-color: red;
 }
 .unselected {
-  background-color: yellow;
 }

@@ -14,17 +14,16 @@ class App extends Component
         "CNN",
         "HackerNews",
         "BBC",
-        "The Wall Street Journal",
-        "New York Times"
+        "Wall Street Journal",
+        "New York Times",
       ],
-      activeButtons: ["CNN","BBC","New York Times"],
+      activeButtons: ["CNN","BBC"],
       maxActiveButtons: 3
     };
   }
 
   buttonClickHandler(name) 
   {
-    console.log(this.state.activeButtons)
     if(this.state.activeButtons.includes(name)) 
     {
       this.setState(
@@ -36,13 +35,30 @@ class App extends Component
     {
       if(this.state.activeButtons.length<this.state.maxActiveButtons) 
       {
-        this.setState({activeButtons: this.state.activeButtons.push(name)});
+        let newActives=this.state.activeButtons.slice(0);
+        newActives.push(name);
+        this.setState({activeButtons: newActives});
       }
       else 
       {
         console.log("Button attempted to be added above limit");
       }
     }
+  }
+
+  generateClickHandler()
+  {
+    let baseUrl='http://localhost:8000/api/articles/';
+    let url=this.buildUrl(baseUrl,this.state.activeButtons)
+    fetch(url).then((response) => response.json())
+      .then(function(data) {console.log(data)})
+      .catch((error) => console.log(error));
+  }
+
+  buildUrl(baseUrl,sources)
+  {
+    let formattedSources=sources.map(name => "source=".concat(name.toLowerCase(),"&"));
+    return baseUrl.concat("?",formattedSources.join(''))
   }
 
   render()
@@ -58,7 +74,7 @@ class App extends Component
             xmax="5"
           ></InputSlider>
           <div id="generate-container">
-            <button id="generate">Generate</button>
+            <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
           </div>
           <InputSlider title="# of Articles per Source" xmax="3"></InputSlider>
         </div>
@@ -66,16 +82,15 @@ class App extends Component
           {this.state.sources.map(name =>
           {
             return (
-              <SourceButton
+              <button
                 source={name}
-                className={
-                  this.state.activeButtons.includes(name)
-                    ? "selected"
-                    :"unselected"
+                className={this.state.activeButtons.includes(name)
+                  ? "selected"
+                  :"unselected"
                 }
                 onClick={() => this.buttonClickHandler(name)}
                 key={name}
-              />
+              >{name}</button>
             );
           })}
         </div>
