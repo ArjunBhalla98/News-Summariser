@@ -1,28 +1,32 @@
 from rest_framework import viewsets
 from .serializers import ArticleSerializer
+import json
 from .models import Article
-from .api_caller import get_data
+from django.core import serializers
+from .api_caller import get_data, scrape_html_article_tags, get_object_jsons
 
 
 # Note for self: This is literally just a controller, it handles http reqs and responses
 class ArticleView(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
 
-    def get_queryset(self):
+    def get_queryset(
+        self):  # This will need to be rehauled if custom URLs are req'd
         source = self.request.query_params.getlist("source")
-        if "hackernews" in source:  # add a condition here for refreshing too
-            self.update_hn()
+        qs = []
+        if "hacker news" in source:
+            qs += self.get_hn()
+            source.remove("hacker news")
 
-        qs = Article.objects.none()
+        if source != []:
+            qs += list(
+                map(self.create_article_from_json, get_object_jsons(source)))
 
-        for src in source:
-            qs = qs.union(Article.objects.filter(source=src))
+        return set(qs)
 
-        return qs.distinct()
-
-    def update_hn(self):
+    def get_hn(self):
         json_list = get_data(3)  #  placeholder number. should come from req
-
+        articles = []
         for item in json_list:  # Map wasn't working?
             title = item['title']
 
@@ -34,10 +38,22 @@ class ArticleView(viewsets.ModelViewSet):
             try:
                 link = item['url']
             except KeyError:
-                link = "http://www.hackernews.com"
+                link = "http://www.news.ycombinator.com"
 
             source = "hackernews"
-            self.save_article_to_database(title, text, link, source)
+            a = Article.objects.create(title=title,
+                                       text=text,
+                                       source=source,
+                                       link=link)
+            articles.append(a)
+        return articles
+
+    def create_article_from_json(self, data):
+        obj = json.loads(data)
+        return Article.objects.create(title=obj['title'],
+                                      text=obj['text'],
+                                      source=obj['source'],
+                                      link=obj['link'])
 
     def save_article_to_database(self, title, text, link, source):
         Article.objects.create(title=title,

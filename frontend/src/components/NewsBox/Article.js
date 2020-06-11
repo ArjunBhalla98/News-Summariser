@@ -12,12 +12,11 @@ class Article extends Component
     render()
     {
         return (
-            <a href={this.props.link}>
-                <div id="article-container">
-                    <h3>{this.props.title}</h3>
-                    <p>{this.props.text}</p>
-                </div>
-            </a>
+            <div id="article-container">
+                <h3>{this.props.title}</h3>
+                <p>{this.props.text}</p>
+                <a href={this.props.link} target="blank">Link</a>
+            </div>
         );
     }
 }

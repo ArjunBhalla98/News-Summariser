@@ -11,18 +11,22 @@ class App extends Component
     super(props);
     this.state={
       sources: [
-        "CNN",
-        "HackerNews",
-        "BBC",
-        "Wall Street Journal",
-        "New York Times",
+        "Associated Press",
+        "Hacker News",
+        "BBC News",
+        "The Wall Street Journal",
+        "The Times of India",
       ],
-      activeButtons: ["CNN","BBC"],
+      activeButtons: ["Associated Press","BBC News","The Times of India"],
       maxActiveButtons: 3,
       currentNewsObjects: []
     };
   }
 
+  componentDidMount()
+  {
+    this.generateClickHandler()
+  }
   buttonClickHandler(name) 
   {
     if(this.state.activeButtons.includes(name)) 
@@ -64,6 +68,28 @@ class App extends Component
     return baseUrl.concat("?",formattedSources.join(''))
   }
 
+  generateNewsBoxes()
+  {
+    let sourceToObjList={}
+    for(let i=0;i<this.state.currentNewsObjects.length;i++)
+    {
+      let item=this.state.currentNewsObjects[i]
+      console.log(item)
+      if(item.source in sourceToObjList)
+      {
+        sourceToObjList[item.source].push(item)
+      }
+      else
+      {
+        sourceToObjList[item.source]=[item]
+      }
+    }
+    let return_val=Object.keys(sourceToObjList).map((key,_) =>
+      <NewsBox source={key} items={sourceToObjList[key]} />)
+
+    return return_val
+  }
+
   render()
   {
     return (
@@ -71,15 +97,8 @@ class App extends Component
         <div className="App-header">
           <h2>News Summariser</h2>
         </div>
-        <div id="slider-row">
-          <InputSlider
-            title="# of Sentences per Article"
-            xmax="5"
-          ></InputSlider>
-          <div id="generate-container">
-            <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
-          </div>
-          <InputSlider title="# of Articles per Source" xmax="3"></InputSlider>
+        <div id="generate-container">
+          <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
         </div>
         <div id="sources-row">
           {this.state.sources.map(name =>
@@ -99,12 +118,7 @@ class App extends Component
         </div>
         <div id="news-row">
           {
-            this.state.currentNewsObjects.map((obj,_) => 
-            {
-              return (
-                <NewsBox source={obj.source} articleText={obj.text} title={obj.title} articleLink={obj.link} />
-              )
-            })
+            this.generateNewsBoxes()
           }
         </div>
       </div>
