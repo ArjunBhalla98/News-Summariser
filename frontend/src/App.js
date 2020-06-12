@@ -1,6 +1,5 @@
 import React,{Component} from "react";
-import InputSlider from "./components/InputSlider/InputSlider";
-import SourceButton from "./components/SourceButton/SourceButton";
+import {Helmet} from "react-helmet"
 import NewsBox from "./components/NewsBox/NewsBox";
 import "./App.css";
 
@@ -93,10 +92,13 @@ class App extends Component
     return return_val
   }
 
+  TITLE="News Summariser";
+
   render()
   {
     return (
       <div className="App">
+        <Helmet><title>{this.TITLE}</title></Helmet>
         <div id="sources-row">
           {this.state.sources.map(name =>
           {
