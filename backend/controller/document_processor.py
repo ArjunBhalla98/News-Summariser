@@ -49,7 +49,9 @@ def get_word_frequency(words):
 def pos_tagging(text):
     pos_tag = nltk.pos_tag(text.split())
     pos_tagged_noun_verb = []
-    allowed_tags = ["NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"]
+    allowed_tags = [
+        "NN", "NNP", "NNS", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ"
+    ]
 
     for word, tag in pos_tag:
         if tag in allowed_tags:
@@ -78,7 +80,8 @@ def idf_score(no_of_sentences, word, sentences):
         sentence = re.sub(r"\d+", "", sentence)
         sentence = sentence.split()
         sentence = [
-            word for word in sentence if word.lower() not in STOPWORDS and len(word) > 1
+            word for word in sentence
+            if word.lower() not in STOPWORDS and len(word) > 1
         ]
         sentence = [word.lower() for word in sentence]
         sentence = [WORDLEMMATIZER.lemmatize(word) for word in sentence]
@@ -112,12 +115,12 @@ def sentence_importance(sentence, dict_freq, sentences):
     pos_tagged_sentence = pos_tagging(sentence)
 
     for word in pos_tagged_sentence:
-        if word.lower() not in STOPWORDS and word not in STOPWORDS and len(word) > 1:
+        if word.lower(
+        ) not in STOPWORDS and word not in STOPWORDS and len(word) > 1:
             word = word.lower()
             word = WORDLEMMATIZER.lemmatize(word)
             sentence_score = sentence_score + word_tfidf(
-                dict_freq, word, sentences, sentence
-            )
+                dict_freq, word, sentences, sentence)
     return sentence_score
 
 
@@ -125,12 +128,17 @@ def get_summary(text, n):
     """
     Returns a summary of the text that is n sentences long.
     """
+    # try:
+    #     text = text.decode('utf8').encode('ascii', errors='ignore')
+    # except:
+    #     text = text.encode('ascii', errors='ignore')
     tokenized_sentence = sent_tokenize(text)
     text = remove_special_characters(str(text))
     text = re.sub(r"\d+", "", text)
     tokenized_words_with_stopwords = word_tokenize(text)
     tokenized_words = [
-        word for word in tokenized_words_with_stopwords if word not in STOPWORDS
+        word for word in tokenized_words_with_stopwords
+        if word not in STOPWORDS
     ]
     tokenized_words = [word for word in tokenized_words if len(word) > 1]
     tokenized_words = [word.lower() for word in tokenized_words]
@@ -147,22 +155,17 @@ def get_summary(text, n):
         idx_to_sentence[c] = sent
         c = c + 1
 
-    importance_ranked_sentence_idxes = sorted(
-        sentence_to_importance.items(), key=operator.itemgetter(1), reverse=True
-    )
+    importance_ranked_sentence_idxes = sorted(sentence_to_importance.items(),
+                                              key=operator.itemgetter(1),
+                                              reverse=True)
 
     important_sent_idxes_ordered = sorted(
-        [i[0] for i in importance_ranked_sentence_idxes[:n]]
-    )
+        [i[0] for i in importance_ranked_sentence_idxes[:n]])
 
     summary = [idx_to_sentence[i] for i in important_sent_idxes_ordered]
 
     summary = " ".join(summary)
-    print("\n")
-    print("Summary:")
-    print(summary)
-    outF = open("summary.txt", "w")
-    outF.write(summary)
+    return summary
 
 
 if __name__ == "__main__":
@@ -170,4 +173,3 @@ if __name__ == "__main__":
     file = open(file, "r")
     text = file.read()
     get_summary(text, 5)
-

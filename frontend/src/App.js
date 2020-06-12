@@ -115,13 +115,13 @@ class App extends Component
             );
           })}
         </div>
-        <div id="generate-container">
-          <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
-        </div>
         <div id="news-row">
           {
             this.generateNewsBoxes()
           }
+        </div>
+        <div id="generate-container">
+          <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
         </div>
       </div>
     );

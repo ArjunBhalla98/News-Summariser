@@ -1,21 +1,30 @@
 .article-container{
+    background: #878683;
+    font-size: 0.85vw;
     padding: 2%;
+    height: 20vh;
     animation: fadeIn 1s ease forwards;
     border-radius:10px;
     transition: box-shadow .3s;
-    box-shadow: 3px 4px rgba(33,33,33,.2);
+    box-shadow: 2px 2px 2px 2px rgba(33,33,33,.2);
     flex: 1;
     text-align: left;
     margin: 3%;
 }
 
 .article-inner {
+    height: 30%;
     pointer-events:none;
 }
 
 .newsbox :hover {
-    box-shadow: 6px 8px 11px rgba(33,33,33,.2); 
+    /* box-shadow: 4px 4px 4px 4px rgba(33,33,33,.2);  */
+    box-shadow: 2px 2px 2px 2px#bebebe;
     cursor: pointer;
+}
+
+h2, h3 {
+    font-family: PT Sans;
 }
 
 .newsbox h2 {
@@ -43,6 +52,7 @@
 .newsbox {
     width: 30%;
     margin: 1%;
+    height: 75%;
     display: inline-block;
     vertical-align: top;   
     text-align:center;

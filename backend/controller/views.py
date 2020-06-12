@@ -4,6 +4,7 @@ import json
 from .models import Article
 from django.core import serializers
 from .api_caller import get_data, scrape_html_article_tags, get_object_jsons
+from .document_processor import get_summary
 
 
 # Note for self: This is literally just a controller, it handles http reqs and responses
@@ -32,6 +33,7 @@ class ArticleView(viewsets.ModelViewSet):
 
             try:
                 text = item['text']
+                text = get_summary(text, 2)
             except KeyError:
                 text = "There is no text body available for this article."
 
