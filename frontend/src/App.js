@@ -46,7 +46,10 @@ class App extends Component
       }
       else 
       {
-        console.log("Button attempted to be added above limit");
+        let activePop=this.state.activeButtons.slice(0);
+        activePop.pop();
+        activePop.push(name)
+        this.setState({activeButtons: activePop})
       }
     }
   }
@@ -94,12 +97,6 @@ class App extends Component
   {
     return (
       <div className="App">
-        <div className="App-header">
-          <h2>News Summariser</h2>
-        </div>
-        <div id="generate-container">
-          <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
-        </div>
         <div id="sources-row">
           {this.state.sources.map(name =>
           {
@@ -115,6 +112,9 @@ class App extends Component
               >{name}</button>
             );
           })}
+        </div>
+        <div id="generate-container">
+          <button id="generate" onClick={() => this.generateClickHandler()}>Generate</button>
         </div>
         <div id="news-row">
           {

@@ -1,12 +1,48 @@
-#article-container {
+.article-container{
+    padding: 2%;
+    animation: fadeIn 1s ease forwards;
+    border-radius:10px;
+    transition: box-shadow .3s;
+    box-shadow: 3px 4px rgba(33,33,33,.2);
     flex: 1;
     text-align: left;
-    margin: 5%;
+    margin: 3%;
+}
+
+.article-inner {
+    pointer-events:none;
+}
+
+.newsbox :hover {
+    box-shadow: 6px 8px 11px rgba(33,33,33,.2); 
+    cursor: pointer;
+}
+
+.newsbox h2 {
+    pointer-events: none;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+    }
+  100% {
+      opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 .newsbox {
-    width: 33%;
-    height: auto;
+    width: 30%;
+    margin: 1%;
     display: inline-block;
     vertical-align: top;   
     text-align:center;

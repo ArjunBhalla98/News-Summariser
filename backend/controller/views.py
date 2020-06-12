@@ -38,7 +38,7 @@ class ArticleView(viewsets.ModelViewSet):
             try:
                 link = item['url']
             except KeyError:
-                link = "http://www.news.ycombinator.com"
+                link = "http://news.ycombinator.com"
 
             source = "hackernews"
             a = Article.objects.create(title=title,

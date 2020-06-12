@@ -9,13 +9,13 @@ class Article extends Component
         super(props);
     }
 
+
     render()
     {
         return (
-            <div id="article-container">
+            <div className="article-inner">
                 <h3>{this.props.title}</h3>
                 <p>{this.props.text}</p>
-                <a href={this.props.link} target="blank">Link</a>
             </div>
         );
     }

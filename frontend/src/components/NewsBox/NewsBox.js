@@ -10,6 +10,11 @@ class NewsBox extends Component
         super(props);
     }
 
+    goToLink(link)
+    {
+        window.open(link,"_blank");
+    }
+
     render()
     {
         return (
@@ -18,7 +23,11 @@ class NewsBox extends Component
                 {
                     this.props.items.map((obj,_) =>
                     {
-                        return <Article title={obj.title} text={obj.text} link={obj.link} />
+                        return (
+                            <div className="article-container" onClick={() => this.goToLink(obj.link)}>
+                                <Article title={obj.title} text={obj.text} link={obj.link} />
+                            </div>
+                        )
                     }
                     )}
             </div>
