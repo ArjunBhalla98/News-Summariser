@@ -55,19 +55,63 @@ class App extends Component
 
   generateClickHandler()
   {
-    let baseUrl='http://localhost:8000/api/articles/';
-    let url=this.buildUrl(baseUrl,this.state.activeButtons)
+    const apiKey="bc221b9c1ead4225bc0d22010397469d";
+    let baseUrl='https://newsapi.org/v2/top-headlines?sources=';
+    let url=this.buildUrl(baseUrl,this.state.activeButtons,apiKey)
     fetch(url)
       .then((response) => response.json())
+      .then((response) => this.getObjectsFromResponse(response))
       .then((data) => {this.setState({currentNewsObjects: data})})
       .catch((error) => console.log(error));
   }
 
-
-  buildUrl(baseUrl,sources)
+  getObjectsFromResponse(response)
   {
-    let formattedSources=sources.map(name => "source=".concat(name.toLowerCase(),"&"));
-    return baseUrl.concat("?",formattedSources.join(''))
+    let finalObjects=[];
+    let sourceCount={}
+    let articles=response.articles
+
+    for(let articleId in articles)
+    {
+      let article=articles[articleId]
+      let source=article.source.name;
+      if(!(source in sourceCount))
+      {
+        sourceCount[source]=1;
+      }
+      else
+      {
+        sourceCount[source]=sourceCount[source]+1;
+      }
+
+      if(sourceCount[source]<=3)
+      {
+        let title=article.title;
+        let text="No text body available for this article."
+
+        try
+        {
+          text=article.description;
+        }
+        catch(err)
+        {
+          console.log(err)
+        }
+
+        let link=article.url;
+
+        finalObjects.push({"title": title,"text": text,"source": source,"link": link})
+      }
+    }
+
+    return finalObjects
+  }
+
+
+  buildUrl(baseUrl,sources,apiKey)
+  {
+    let sourceString=sources.map((x,i,y) => x.toLowerCase().replace(/ /g,"-")).join();
+    return baseUrl.concat(sourceString,"&apiKey=",apiKey)
   }
 
   generateNewsBoxes()

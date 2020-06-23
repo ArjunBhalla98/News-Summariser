@@ -1,5 +1,5 @@
 .article-container{
-    background: #878683;
+    background: #DDD;
     font-size: 0.85vw;
     padding: 2%;
     height: 20vh;
@@ -19,7 +19,7 @@
 
 .newsbox :hover {
     /* box-shadow: 4px 4px 4px 4px rgba(33,33,33,.2);  */
-    box-shadow: 2px 2px 2px 2px#bebebe;
+    box-shadow: 3px 3px 3px 3px rgba(33,33,33,.2);
     cursor: pointer;
 }
 
