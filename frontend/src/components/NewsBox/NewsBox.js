@@ -18,7 +18,7 @@ class NewsBox extends Component
     render()
     {
         return (
-            <div class="newsbox">
+            <div className="newsbox">
                 <h2>{this.props.source.toUpperCase()}</h2>
                 {
                     this.props.items.map((obj,_) =>

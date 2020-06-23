@@ -56,8 +56,9 @@ class App extends Component
   generateClickHandler()
   {
     const apiKey="bc221b9c1ead4225bc0d22010397469d";
+    const proxyUrl="https://cors-anywhere.herokuapp.com/";
     let baseUrl='https://newsapi.org/v2/top-headlines?sources=';
-    let url=this.buildUrl(baseUrl,this.state.activeButtons,apiKey)
+    let url=proxyUrl.concat(this.buildUrl(baseUrl,this.state.activeButtons,apiKey));
     fetch(url)
       .then((response) => response.json())
       .then((response) => this.getObjectsFromResponse(response))
@@ -111,7 +112,8 @@ class App extends Component
   buildUrl(baseUrl,sources,apiKey)
   {
     let sourceString=sources.map((x,i,y) => x.toLowerCase().replace(/ /g,"-")).join();
-    return baseUrl.concat(sourceString,"&apiKey=",apiKey)
+    let finalUrl=baseUrl.concat(sourceString,"&apiKey=",apiKey)
+    return finalUrl
   }
 
   generateNewsBoxes()
@@ -120,7 +122,7 @@ class App extends Component
     for(let i=0;i<this.state.currentNewsObjects.length;i++)
     {
       let item=this.state.currentNewsObjects[i]
-      console.log(item)
+
       if(item.source in sourceToObjList)
       {
         sourceToObjList[item.source].push(item)
