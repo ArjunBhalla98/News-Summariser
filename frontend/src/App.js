@@ -1,5 +1,5 @@
-import React,{Component} from "react";
-import {Helmet} from "react-helmet"
+import React, { Component } from "react";
+import { Helmet } from "react-helmet"
 import NewsBox from "./components/NewsBox/NewsBox";
 import "./App.css";
 
@@ -8,15 +8,15 @@ class App extends Component
   constructor(props)
   {
     super(props);
-    this.state={
+    this.state = {
       sources: [
         "Associated Press",
-        "Hacker News",
         "BBC News",
+        "TechCrunch",
         "The Wall Street Journal",
         "The Times of India",
       ],
-      activeButtons: ["Associated Press","BBC News","The Times of India"],
+      activeButtons: ["Associated Press", "TechCrunch", "The Times of India"],
       maxActiveButtons: 3,
       currentNewsObjects: []
     };
@@ -28,80 +28,80 @@ class App extends Component
   }
   buttonClickHandler(name) 
   {
-    if(this.state.activeButtons.includes(name)) 
+    if (this.state.activeButtons.includes(name)) 
     {
       this.setState(
         {
-          activeButtons: this.state.activeButtons.filter((val,_) => val!==name)
+          activeButtons: this.state.activeButtons.filter((val, _) => val !== name)
         });
     }
     else 
     {
-      if(this.state.activeButtons.length<this.state.maxActiveButtons) 
+      if (this.state.activeButtons.length < this.state.maxActiveButtons) 
       {
-        let newActives=this.state.activeButtons.slice(0);
+        let newActives = this.state.activeButtons.slice(0);
         newActives.push(name);
-        this.setState({activeButtons: newActives});
+        this.setState({ activeButtons: newActives });
       }
       else 
       {
-        let activePop=this.state.activeButtons.slice(0);
+        let activePop = this.state.activeButtons.slice(0);
         activePop.pop();
         activePop.push(name)
-        this.setState({activeButtons: activePop})
+        this.setState({ activeButtons: activePop })
       }
     }
   }
 
   generateClickHandler()
   {
-    const apiKey="bc221b9c1ead4225bc0d22010397469d";
-    const proxyUrl="https://cors-anywhere.herokuapp.com/";
-    let baseUrl='https://newsapi.org/v2/top-headlines?sources=';
-    let url=proxyUrl.concat(this.buildUrl(baseUrl,this.state.activeButtons,apiKey));
+    const apiKey = "bc221b9c1ead4225bc0d22010397469d";
+    const proxyUrl = "https://cors-anywhere.herokuapp.com/";
+    let baseUrl = 'https://newsapi.org/v2/top-headlines?sources=';
+    let url = proxyUrl.concat(this.buildUrl(baseUrl, this.state.activeButtons, apiKey));
     fetch(url)
       .then((response) => response.json())
       .then((response) => this.getObjectsFromResponse(response))
-      .then((data) => {this.setState({currentNewsObjects: data})})
+      .then((data) => { this.setState({ currentNewsObjects: data }) })
       .catch((error) => console.log(error));
   }
 
   getObjectsFromResponse(response)
   {
-    let finalObjects=[];
-    let sourceCount={}
-    let articles=response.articles
+    let finalObjects = [];
+    let sourceCount = {}
+    let articles = response.articles
 
-    for(let articleId in articles)
+    for (let articleId in articles)
     {
-      let article=articles[articleId]
-      let source=article.source.name;
-      if(!(source in sourceCount))
+      let article = articles[articleId]
+      let source = article.source.name;
+      if (!(source in sourceCount))
       {
-        sourceCount[source]=1;
+        sourceCount[source] = 1;
       }
       else
       {
-        sourceCount[source]=sourceCount[source]+1;
+        sourceCount[source] = sourceCount[source] + 1;
       }
 
-      if(sourceCount[source]<=3)
+      if (sourceCount[source] <= 3)
       {
-        let title=article.title;
-        let text="No text body available for this article."
+        let title = article.title;
+        let text = "No text body available for this article."
 
         try
         {
-          text=article.description;
+          text = article.description;
         }
-        catch(err)
+        catch (err)
         {
           console.log(err)
         }
 
-        let link=article.url;
+        let link = article.url;
 
-        finalObjects.push({"title": title,"text": text,"source": source,"link": link})
+        finalObjects.push({ "title": title, "text": text, "source": source, "link": link })
       }
     }
 
@@ -109,36 +109,36 @@ class App extends Component
   }
 
 
-  buildUrl(baseUrl,sources,apiKey)
+  buildUrl(baseUrl, sources, apiKey)
   {
-    let sourceString=sources.map((x,i,y) => x.toLowerCase().replace(/ /g,"-")).join();
-    let finalUrl=baseUrl.concat(sourceString,"&apiKey=",apiKey)
+    let sourceString = sources.map((x, i, y) => x.toLowerCase().replace(/ /g, "-")).join();
+    let finalUrl = baseUrl.concat(sourceString, "&apiKey=", apiKey)
     return finalUrl
   }
 
   generateNewsBoxes()
   {
-    let sourceToObjList={}
-    for(let i=0;i<this.state.currentNewsObjects.length;i++)
+    let sourceToObjList = {}
+    for (let i = 0; i < this.state.currentNewsObjects.length; i++)
     {
-      let item=this.state.currentNewsObjects[i]
+      let item = this.state.currentNewsObjects[i]
 
-      if(item.source in sourceToObjList)
+      if (item.source in sourceToObjList)
       {
         sourceToObjList[item.source].push(item)
       }
       else
       {
-        sourceToObjList[item.source]=[item]
+        sourceToObjList[item.source] = [item]
       }
     }
-    let return_val=Object.keys(sourceToObjList).map((key,_) =>
+    let return_val = Object.keys(sourceToObjList).map((key, _) =>
       <NewsBox source={key} items={sourceToObjList[key]} />)
 
     return return_val
   }
 
-  TITLE="News Summariser";
+  TITLE = "News Summariser";
 
   render()
   {
@@ -153,7 +153,7 @@ class App extends Component
                 source={name}
                 className={this.state.activeButtons.includes(name)
                   ? "selected"
-                  :"unselected"
+                  : "unselected"
                 }
                 onClick={() => this.buttonClickHandler(name)}
                 key={name}
